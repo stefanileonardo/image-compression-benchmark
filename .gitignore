@@ -1,0 +1,40 @@
+# ---------------------------------------------------------------------------------------
+# Regenerable outputs
+# ---------------------------------------------------------------------------------------
+results/figures/
+results/smoe_runs/          # per-tile training scratch: checkpoints, loss plots, etc.
+*.ckpt
+*.ckpt.*
+checkpoint
+
+# LaTeX build artefacts
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.bbl
+paper/*.blg
+paper/*.synctex.gz
+paper/*.fls
+paper/*.fdb_latexmk
+
+# ---------------------------------------------------------------------------------------
+# Python
+# ---------------------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+.ipynb_checkpoints/
+.pytest_cache/
+.mypy_cache/
+
+# ---------------------------------------------------------------------------------------
+# Editors and OS
+# ---------------------------------------------------------------------------------------
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+~$*                          # Microsoft Office lock files

@@ -1,0 +1,31 @@
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        # Unpinned here on purpose: CI checks that the code is correct against current
+        # libraries. requirements.txt pins versions for reproducing the committed
+        # numbers, which is a different job.
+        run: |
+          python -m pip install --upgrade pip
+          pip install numpy pandas matplotlib pyyaml pillow pillow-heif scikit-image pytest
+
+      - name: Run tests
+        run: pytest -v
+
+      - name: Verify the SMoE rate correction still holds
+        run: python scripts/04_smoe_metrics.py

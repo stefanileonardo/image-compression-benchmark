@@ -1,0 +1,42 @@
+cff-version: 1.2.0
+message: "If you use this benchmark or its data, please cite it as below."
+title: "Image Compression Benchmark: Classical Codecs vs. Steered Mixture of Experts"
+abstract: >-
+  A rate-distortion benchmark of JPEG, JPEG 2000 and AVIF against the Steered
+  Mixture of Experts (SMoE) model on five 8-bit grayscale images. All operating
+  points are placed on a common bits-per-pixel axis; SMoE rate is measured from
+  the fitted model parameters rather than from the decoded image.
+type: software
+authors:
+  - family-names: Stefani
+    given-names: Leonardo
+    email: lest2502@student.miun.se
+    affiliation: Mid Sweden University
+version: "1.0.0"
+date-released: "2026-08-08"
+license: MIT
+keywords:
+  - image compression
+  - rate-distortion
+  - JPEG
+  - JPEG 2000
+  - AVIF
+  - steered mixture of experts
+  - PSNR
+  - SSIM
+references:
+  - type: conference-paper
+    title: >-
+      Regularized gradient descent training of steered mixture of experts for
+      sparse image representation
+    authors:
+      - family-names: Bochinski
+        given-names: Erik
+      - family-names: Jongebloed
+        given-names: Rolf
+      - family-names: Tok
+        given-names: Michael
+      - family-names: Sikora
+        given-names: Thomas
+    collection-title: IEEE International Conference on Image Processing (ICIP)
+    year: 2018

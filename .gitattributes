@@ -1,0 +1,25 @@
+# Normalise line endings so the repository is identical on Windows, macOS and Linux.
+* text=auto eol=lf
+
+*.py     text diff=python
+*.md     text
+*.tex    text diff=tex
+*.yaml   text
+*.yml    text
+*.csv    text
+*.txt    text
+*.ipynb  text
+
+# Binary: never diffed, never line-ending-converted.
+*.png    binary
+*.jpg    binary
+*.jp2    binary
+*.avif   binary
+*.pdf    binary
+*.pkl    binary
+
+# Keep generated artefacts out of language statistics and diffs.
+notebooks/legacy/**  linguist-vendored
+src/smoe/vendor/**   linguist-vendored
+results/**           linguist-generated
+paper/figs/**        linguist-documentation

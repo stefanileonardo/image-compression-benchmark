@@ -1,0 +1,32 @@
+# Core pipeline (classical codecs + metrics + figures).
+# Versions are pinned because CODEC OUTPUT IS VERSION-DEPENDENT: a different libaom or
+# OpenJPEG build produces different bytes at the same nominal quality, so unpinned
+# dependencies make the rate numbers irreproducible.
+
+numpy==1.26.4
+pandas==2.2.2
+matplotlib==3.8.4
+PyYAML==6.0.1
+
+# Pillow provides JPEG (libjpeg-turbo) and JPEG 2000 (OpenJPEG).
+Pillow==10.3.0
+
+# AVIF via libheif + libaom.
+pillow-heif==0.16.0
+
+# Used by the vendored tf-smoe plotter and by the metric cross-check tests, which
+# assert agreement with scikit-image to ~1e-15.
+scikit-image==0.22.0
+
+# Test suite (pytest tests/).
+pytest==8.2.0
+
+# ---------------------------------------------------------------------------------------
+# SMoE training only -- NOT needed to reproduce the tables and figures from the
+# parameters already shipped in results/smoe_params/. Install separately:
+#
+#   pip install "tensorflow==2.15.0"
+#
+# The vendored code runs through tf.compat.v1, so any TF 2.x with compat.v1 works.
+# A GPU with ~16 GB is strongly recommended; CPU training is impractically slow.
+# ---------------------------------------------------------------------------------------
