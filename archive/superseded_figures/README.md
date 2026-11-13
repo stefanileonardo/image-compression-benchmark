@@ -5,7 +5,7 @@ so the earlier version of the paper still compiles if anyone needs to diff again
 
 **Do not use them.** They plot quality against each codec's own quality setting rather
 than against bits per pixel, and they were produced from the pre-correction SMoE rate
-(the size of the reconstructed PNG rather than the model). See `../../../AUDIT.md`.
+(the size of the reconstructed PNG rather than the model). See [`docs/AUDIT.md`](../../docs/AUDIT.md).
 
-Current figures live in `../generated/` and are regenerated from `results/metrics/*.csv`
+Current figures live in `paper/figs/generated/` and are regenerated from `results/metrics/*.csv`
 by `scripts/06_make_figures.py`.

@@ -1,6 +1,6 @@
 r"""SMoE rate measurement — from model parameters, not from the decoded image.
 
-This module exists because of AUDIT.md **B1**, the most consequential error in the
+This module exists because of docs/AUDIT.md **B1**, the most consequential error in the
 original study: the reported "SMoE file size" was the byte size of
 ``<image>_reconstructed.png``, i.e. the **decoder output**. A PNG of a decoded image
 measures the entropy of a blurry picture; it is not what a SMoE decoder would have to
@@ -80,7 +80,7 @@ def count_kernels(params_pickle: Path) -> int:
     Reads ``params_best.pkl`` as written by the reference ``utils.save_model``. The
     length of the ``pis`` vector is the surviving kernel count: an unpruned run gives
     exactly :math:`K^2` (256 for K=16, 1024 for K=32), which is how the folder
-    mislabelling in AUDIT.md B2 was detected.
+    mislabelling in docs/AUDIT.md B2 was detected.
     """
     with open(params_pickle, "rb") as fh:
         blob = pickle.load(fh)

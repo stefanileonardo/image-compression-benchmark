@@ -3,7 +3,7 @@
 Nothing here hardcodes a measurement. The original ``GraphsFinal.ipynb`` embedded roughly
 350 lines of metrics as Python literals plus an inline fallback copy of a timing table,
 so the figures could drift silently from the code that claimed to produce them
-(AUDIT.md m6). Here the CSVs are the single source of truth.
+(docs/AUDIT.md m6). Here the CSVs are the single source of truth.
 """
 
 from __future__ import annotations
@@ -74,7 +74,7 @@ def quality_vs_time(df: pd.DataFrame, out_dir: Path, image: str,
     """Quality against encode time on a log axis, for one image.
 
     Reproduces the paper's Fig. 3. Note in the caption that SMoE ran on a Tesla P100 GPU
-    while the classical codecs ran on an i7-1165G7 CPU (AUDIT.md M3).
+    while the classical codecs ran on an i7-1165G7 CPU (docs/AUDIT.md M3).
     """
     out_dir.mkdir(parents=True, exist_ok=True)
     group = _lossy(df)

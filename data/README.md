@@ -33,7 +33,7 @@ python scripts/01_preprocess.py
 Because these are `mode='L'`, the codecs encode a **single channel**. The original study
 called `.convert('RGB')` first, which encoded three identical channels and inflated the
 compressed size by 16-73 % — biasing the size comparison against the classical codecs
-while leaving PSNR/SSIM untouched. See AUDIT.md M2.
+while leaving PSNR/SSIM untouched. See `docs/AUDIT.md`, finding M2.
 
 ## Licensing
 

@@ -1,7 +1,7 @@
 """Turn per-operating-point metrics into the tables the paper reports.
 
 The aggregation policy for lossless operating points is stated explicitly here rather
-than left implicit. This is the fix for AUDIT.md **B4**: JPEG 2000 in reversible mode is
+than left implicit. This is the fix for docs/AUDIT.md **B4**: JPEG 2000 in reversible mode is
 genuinely lossless, so its PSNR is ``inf``, and the original code fed that straight into
 ``np.mean`` / ``np.max`` with no guard. Any mean or max over that array is ``inf``, yet
 the paper reported a finite 42.7 dB — a number the committed code could not produce.
@@ -58,7 +58,7 @@ def summarise(df: pd.DataFrame, by: str = "codec") -> pd.DataFrame:
 def rate_distortion_table(df: pd.DataFrame) -> pd.DataFrame:
     """Every lossy operating point on a common bits-per-pixel axis.
 
-    This is the comparison the original study was missing entirely (AUDIT.md M1): it
+    This is the comparison the original study was missing entirely (docs/AUDIT.md M1): it
     plotted quality against each codec's own setting, which is not comparable across
     codecs. bpp is.
     """

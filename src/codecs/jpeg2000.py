@@ -7,7 +7,7 @@ targeting, which is **genuinely lossless**: measured MSE is exactly 0, so PSNR i
 
 That is not a bug, but it must be handled explicitly rather than fed into ``np.mean``.
 The original project hardcoded ``float('inf')`` into its metric tables and then
-aggregated with an unguarded ``np.mean`` / ``np.max`` (AUDIT.md, B4). Here the operating
+aggregated with an unguarded ``np.mean`` / ``np.max`` (docs/AUDIT.md, B4). Here the operating
 point is flagged via ``lossless=True`` so downstream aggregation can apply a stated
 policy.
 """

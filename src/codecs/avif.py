@@ -1,6 +1,6 @@
 """AVIF (AV1 Image File Format) via ``pillow-heif`` (libheif + libaom).
 
-Two fixes relative to the original notebook (AUDIT.md m2, m3):
+Two fixes relative to the original notebook (docs/AUDIT.md m2, m3):
 
 * the encoder ``speed`` setting is actually passed to ``save()``. The original defined
   ``speed = 6`` with a comment about the speed/quality tradeoff and then never used it,

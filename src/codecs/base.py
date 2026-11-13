@@ -4,7 +4,7 @@ Every codec exposes the same contract: given a PIL image and a quality setting, 
 it in memory, decode it back, and report the encoded size, the decoded array and the
 elapsed encode time.
 
-Two corrections relative to the original notebooks (see AUDIT.md):
+Two corrections relative to the original notebooks (see docs/AUDIT.md):
 
 * **M1** — the encoded byte count is recorded at *every* sweep point. The originals only
   measured the single top-quality file written to disk, which is why no rate-distortion

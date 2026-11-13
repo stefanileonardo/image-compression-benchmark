@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Measure SMoE rate and distortion; write results/metrics/smoe.csv.
 
-This is the fix for AUDIT.md B1. Rate comes from the PARAMETER COUNT, not from the size
+This is the fix for docs/AUDIT.md B1. Rate comes from the PARAMETER COUNT, not from the size
 of the reconstructed PNG. It also re-verifies that each results folder really holds the
 kernel budget its name claims, which is how the original mislabelling was caught.
 """

@@ -3,7 +3,7 @@
 Every path in this repository is derived from the location of this file, so the code
 runs unchanged on Windows, macOS and Linux and from any working directory. Nothing here
 hardcodes a user directory — that was the single biggest portability defect in the
-original notebooks (see AUDIT.md, P1).
+original notebooks (see docs/AUDIT.md, P1).
 """
 
 from __future__ import annotations

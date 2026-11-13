@@ -1,6 +1,6 @@
 """Tests for the SMoE rate measurement and for the shipped parameter files.
 
-These guard the correction at the centre of this repository (AUDIT.md B1): rate must come
+These guard the correction at the centre of this repository (docs/AUDIT.md B1): rate must come
 from the model, not from the size of the decoded image. They also re-verify the
 configuration labelling (B2), so a mislabelled directory can never silently reappear.
 """
@@ -62,7 +62,7 @@ INITIAL_KERNELS_PER_TILE = {16: 256, 32: 1024, 96: 9216}
 
 @pytest.mark.parametrize("budget", [16, 32, 96])
 def test_shipped_params_match_their_label(budget):
-    """Regression guard for AUDIT.md B2, where two folders held the wrong budget."""
+    """Regression guard for docs/AUDIT.md B2, where two folders held the wrong budget."""
     base = config.SMOE_PARAMS / f"K{budget:03d}"
     if not base.is_dir():
         pytest.skip(f"K{budget:03d} parameters not present")
@@ -86,7 +86,7 @@ def test_kernel_counts_never_exceed_the_budget(budget, initial):
     """l1 pruning only ever removes kernels, so a tile can never hold more than K^2.
 
     A count *above* the nominal budget is the signature of the mislabelling in
-    AUDIT.md B2, where a folder named ``64k`` actually held K=32 results.
+    docs/AUDIT.md B2, where a folder named ``64k`` actually held K=32 results.
     """
     base = config.SMOE_PARAMS / f"K{budget:03d}"
     if not base.is_dir():

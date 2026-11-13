@@ -3,7 +3,7 @@
 All functions accept 2-D grayscale or 3-D multi-channel ``uint8``/float arrays and
 assume an 8-bit dynamic range unless ``data_range`` says otherwise.
 
-Notes on correctness (see AUDIT.md):
+Notes on correctness (see docs/AUDIT.md):
 
 * ``_box_filter`` here is the *corrected* version. The original project helper
   (``_box_filter_same``) returned an ``(H-1, W-1)`` map with the window shifted by one

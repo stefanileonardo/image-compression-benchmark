@@ -10,11 +10,11 @@ type: software
 authors:
   - family-names: Stefani
     given-names: Leonardo
-    email: lest2502@student.miun.se
     affiliation: Mid Sweden University
 version: "1.0.0"
 date-released: "2026-08-08"
 license: MIT
+repository-code: "https://github.com/stefanileonardo/image-compression-benchmark"
 keywords:
   - image compression
   - rate-distortion

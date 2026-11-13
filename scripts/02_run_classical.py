@@ -2,8 +2,8 @@
 """Sweep JPEG, JPEG 2000 and AVIF; write results/metrics/classical.csv.
 
 Records the encoded byte count and therefore bits per pixel at EVERY operating point,
-which is what makes a rate-distortion comparison possible (AUDIT.md M1). Grayscale
-sources are encoded natively as single channel (AUDIT.md M2).
+which is what makes a rate-distortion comparison possible (docs/AUDIT.md M1). Grayscale
+sources are encoded natively as single channel (docs/AUDIT.md M2).
 """
 
 import argparse

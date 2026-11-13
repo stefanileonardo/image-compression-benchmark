@@ -31,7 +31,7 @@ This is intentional — they are an archive, not a fallback.
 
 ## Known defects preserved here
 
-Reading these alongside `AUDIT.md` shows what changed and why. In particular:
+Reading these alongside `docs/AUDIT.md` shows what changed and why. In particular:
 
 - SMoE rate taken as the size of the reconstructed PNG (B1)
 - no byte count recorded during the quality sweeps, so no rate axis (M1)

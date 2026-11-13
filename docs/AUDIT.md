@@ -12,7 +12,7 @@
 |---|---|---|
 | **B1** | SMoE rate taken from the reconstructed PNG | **Fixed.** `src/smoe/rate.py` derives rate from the parameter count; paper and README rewritten around it. Regression-tested. |
 | **B2** | Two SMoE folders mislabelled by kernel budget | **Fixed.** Renamed to verified counts (`K016`/`K032`/`K096`); `scripts/04_smoe_metrics.py` re-checks at runtime; `tests/test_smoe_rate.py` guards it. |
-| **B3** | Two configurations produced identical reconstructions | **Fixed.** Duplicate quarantined in `results/smoe_params/_disputed_second_K016_run/`, loaded by nothing. Three budgets reported, not four. |
+| **B3** | Two configurations produced identical reconstructions | **Fixed.** Duplicate quarantined in `archive/smoe_duplicate_K016_run/`, loaded by nothing. Three budgets reported, not four. |
 | **B4** | Infinite PSNR fed into `np.mean` / `np.max` | **Fixed.** `src/analysis/aggregate.py` states and applies an explicit exclusion policy; lossless points reported separately. Tested. |
 | **B5** | 96k *Mixed* run incomplete but reported | **Fixed.** Excluded from aggregates, flagged by a runtime warning, and disclosed in the paper's Limitations. |
 | **M1** | No rate axis anywhere | **Fixed.** Byte count recorded at every operating point; all figures now plot against bits per pixel. |
@@ -23,14 +23,14 @@
 | **m2** | AVIF `speed` never passed to the encoder | **Fixed.** |
 | **m3** | Docs named the wrong AVIF library | **Fixed.** |
 | **m4** | Metrics scraped from notebook output cells | **Fixed.** Metrics written to CSV at compute time; the scraper is gone. |
-| **m5** | Duplicate `Graphs.ipynb` | **Fixed.** Superseded notebooks archived under `notebooks/legacy/`. |
+| **m5** | Duplicate `Graphs.ipynb` | **Fixed.** Superseded notebooks archived under `archive/notebooks/`. |
 | **m6** | Figures hardcoded their own data | **Fixed.** `src/analysis/figures.py` reads only `results/metrics/*.csv`. |
 | **P1** | Stale absolute Windows paths | **Fixed.** All paths resolve from the repository root via `src/config.py`. Tested. |
 | **P2** | SMoE notebook was Kaggle-only | **Fixed.** `src/smoe/tiling.py` is a portable port; upstream vendored pre-patched. |
 | **P3** | Runtime environment mutation | **Fixed.** No `pip install`, `git clone` or `sed -i` at runtime. |
-| **P4** | No environment specification | **Fixed.** Pinned `requirements.txt`, `ENVIRONMENT.md`, CI workflow. |
+| **P4** | No environment specification | **Fixed.** Pinned `requirements.txt`, `docs/ENVIRONMENT.md`, CI workflow. |
 | **P5** | Lock files, `__pycache__`, four vendor copies | **Fixed.** Removed; one vendored copy; `.gitignore` added. |
-| **P6** | 4,232 files / 2.1 GB of intermediates | **Fixed.** 76 MB, ~390 files. Provenance in `results/PROVENANCE.md`. |
+| **P6** | 4,232 files / 2.1 GB of intermediates | **Fixed.** 76 MB, ~390 files. Provenance in `docs/PROVENANCE.md`. |
 
 **Open, by choice:** the $K=64$ run was never performed and is not reconstructable without
 hours of GPU time; parameter quantisation and entropy coding for SMoE are not implemented.

@@ -4,9 +4,10 @@ Benchmarking three standardised codecs — **JPEG**, **JPEG 2000** and **AVIF** 
 per-image learned representation, the **Steered Mixture of Experts (SMoE)** model of
 Bochinski et al. (ICIP 2018), on five 8-bit grayscale images.
 
-**Leonardo Stefani** · Mid Sweden University, Sundsvall · `lest2502@student.miun.se`
+**Leonardo Stefani** · Mid Sweden University, Sundsvall
 
----
+The full write-up is in [`paper/conference.pdf`](paper/conference.pdf). These results supersede an
+earlier version of the study; see [Correction to the earlier version](#correction-to-the-earlier-version).
 
 ## What this is
 
@@ -29,48 +30,45 @@ correctly — more expensive in bits as well.
 | **RQ2** | Quality vs. size vs. time? | All rise together, but at wildly different rates. SMoE's time cost grows fastest. |
 | **RQ3** | Is SMoE computationally feasible? | No. 8–210 min/image vs. 0.04–2 s. |
 
----
+## Results
 
-## ⚠ Correction notice
+Aggregate over all lossy operating points (lossless points excluded — see below).
+Regenerate with `python scripts/05_aggregate.py`.
 
-This repository supersedes an earlier version of the study. An audit before publication
-found that the original **SMoE "file size" was the byte size of the reconstructed PNG** —
-the decoder *output* — rather than the transmitted model. That made SMoE look
-competitive on rate when the opposite is true.
-
-Measuring the actual payload (10 `float32` per surviving kernel) gives:
-
-| Image | $K=16$ | $K=32$ | $K=96$ | Uncompressed | AVIF (near-lossless) |
+| Codec | Points | PSNR mean | PSNR range | SSIM mean | bpp range |
 |---|---|---|---|---|---|
-| Gradient | 0.45 bpp | 1.80 bpp | **15.61 bpp** | 8.00 bpp | 0.90 bpp |
-| Grass | 0.45 bpp | 1.80 bpp | **14.39 bpp** | 8.00 bpp | 1.34 bpp |
-| Nature | 0.51 bpp | 2.05 bpp | **14.92 bpp** | 8.00 bpp | 4.86 bpp |
-| Sharp Edges | 0.59 bpp | 2.37 bpp | **20.13 bpp** | 8.00 bpp | 0.37 bpp |
+| **AVIF** | 45 | **42.81 dB** | 24.28 – 61.33 | **0.965** | 0.008 – 2.49 |
+| **JPEG 2000** | 45 | 42.67 dB | 24.88 – 57.34 | **0.967** | 0.001 – 4.11 |
+| **JPEG** | 50 | 41.48 dB | 25.97 – 67.88 | 0.958 | 0.035 – 4.83 |
+| **SMoE** | 14 | **29.66 dB** | 20.84 – 39.66 | **0.859** | 0.387 – 20.13 |
 
-At its best-quality setting SMoE costs roughly **twice the uncompressed image** and still
-reaches only ~25–34 dB. No quantisation or entropy coding of SMoE parameters is
-implemented anywhere in this project, so the `float32` figure is the honest measured
-rate; `results/metrics/smoe.csv` also reports an optimistic 8-bit bound that is *not*
-achieved.
+### The comparison that matters: matched rate
 
-Two further corrections carried into this repository:
+Averaging over each codec's own quality ladder is only weakly informative, because the
+ladders are not comparable. The sharper question is: **at the same number of bits, who
+wins?** Every SMoE point paired with classical points within ±15 % bpp:
 
-- **Configuration labels.** Two of the original result folders were mislabelled — the
-  folder named `32k_…` held 256 kernels/tile ($K=16$) and `64k_…` held 1024 ($K=32$).
-  Only three budgets were ever run: **16, 32, 96**. Folders here are named by verified
-  kernel count and re-checked at runtime by `scripts/04_smoe_metrics.py`.
-- **Duplicated run.** The two lowest original configurations produced byte-identical
-  reconstructions across all five images. The duplicate is preserved under
-  `results/smoe_params/_disputed_second_K016_run/` rather than counted twice.
+| Image | SMoE | bpp | SMoE PSNR | Best rival at that rate | Gap |
+|---|---|---|---|---|---|
+| Gradient | $K=16$ | 0.45 | 39.56 dB | JPEG 2000 Q80 — 53.79 dB | **−14.2 dB** |
+| Grass | $K=16$ | 0.45 | 22.09 dB | AVIF Q80 — 48.62 dB | **−26.5 dB** |
+| Mixed | $K=16$ | 0.39 | 23.07 dB | AVIF Q80 — 48.76 dB | **−25.7 dB** |
+| Nature | $K=16$ | 0.51 | 20.84 dB | AVIF Q40 — 29.26 dB | **−8.4 dB** |
+| Nature | $K=32$ | 2.05 | 22.13 dB | AVIF Q80 — 40.98 dB | **−18.9 dB** |
 
-The full audit, with the evidence for each finding, is in [`AUDIT.md`](AUDIT.md).
+SMoE is 8 to 27 dB behind at equal bitrate. Full table in
+`results/metrics/matched_rate_comparison.csv`.
 
----
+![Rate-distortion, Nature](paper/figs/generated/rd_psnr_Nature_sq_gray.png)
+
+The three classical curves cluster tightly; SMoE sits far below all of them, and its
+best-quality point lands to the *right* of the 8 bpp uncompressed reference — it costs
+more than sending the raw image.
 
 ## Quick start
 
 ```bash
-git clone https://github.com/<user>/image-compression-benchmark.git
+git clone https://github.com/stefanileonardo/image-compression-benchmark.git
 cd image-compression-benchmark
 
 python -m venv .venv
@@ -119,18 +117,15 @@ Needs `IEEEtran.cls` (`texlive-publishers` on Debian/Ubuntu, or MiKTeX on Window
 Figures resolve from `data/processed/` and `paper/figs/` via `\graphicspath`, so the
 document compiles wherever the repository is checked out.
 
----
-
 ## Repository layout
 
 ```
 image-compression-benchmark/
 │
-├── README.md                    ← you are here
-├── AUDIT.md                     ← correctness audit; read before citing any number
+├── README.md
 ├── LICENSE                      ← MIT (vendored tf-smoe keeps its own)
+├── CITATION.cff
 ├── requirements.txt             ← pinned; codec output is version-dependent
-├── .gitignore
 │
 ├── config/
 │   └── experiment.yaml          ← single source of truth: images, ladders, SMoE settings
@@ -138,7 +133,7 @@ image-compression-benchmark/
 ├── data/
 │   ├── raw/                     ← original captures
 │   ├── processed/               ← square 8-bit grayscale benchmark set
-│   └── README.md                ← provenance and preprocessing notes
+│   └── README.md                ← composition and preprocessing notes
 │
 ├── src/
 │   ├── config.py                ← root-relative path resolution; no hardcoded paths
@@ -150,7 +145,7 @@ image-compression-benchmark/
 │   ├── smoe/
 │   │   ├── rate.py              ← rate from PARAMETER COUNT, not from the decoded PNG
 │   │   ├── tiling.py            ← tiled training + Hann-window stitching
-│   │   └── vendor/tf_smoe/      ← one pre-patched copy of upstream (was four)
+│   │   └── vendor/tf_smoe/      ← pre-patched copy of the upstream implementation
 │   └── analysis/
 │       ├── aggregate.py         ← tables; explicit policy for lossless points
 │       └── figures.py           ← all figures, generated from CSV only
@@ -159,26 +154,32 @@ image-compression-benchmark/
 │   ├── 01_preprocess.py         02_run_classical.py   03_run_smoe.py
 │   └── 04_smoe_metrics.py       05_aggregate.py       06_make_figures.py
 │
-├── notebooks/legacy/            ← the original notebooks, kept as the historical record
 ├── tests/                       ← 40 tests; metrics pinned against scikit-image
 ├── .github/workflows/           ← CI: tests + the SMoE rate check on every push
 │
 ├── results/
 │   ├── metrics/                 ← CSV: the single source for every table and figure
+│   ├── timing/                  ← original SMoE wall-clock tables
 │   ├── reconstructions/         ← final decoded images per codec
-│   ├── smoe_params/             ← 215 fitted per-tile models (K016 / K032 / K096)
-│   ├── figures/                 ← generated, git-ignored
-│   └── PROVENANCE.md            ← old folder names → new labels, and what changed
+│   ├── smoe_params/             ← 192 fitted per-tile models (K016 / K032 / K096)
+│   └── figures/                 ← generated, git-ignored
 │
-└── paper/
-    ├── conference.tex  conference.pdf
-    └── figs/
-        ├── generated/           ← current figures, copied from results/figures/
-        ├── visual_comparison/   ← side-by-side reconstructions
-        └── superseded/          ← pre-correction exports, kept for diffing only
+├── paper/
+│   ├── conference.tex  conference.pdf
+│   └── figs/
+│       ├── generated/           ← current figures, copied from results/figures/
+│       └── visual_comparison/   ← side-by-side reconstructions
+│
+├── docs/
+│   ├── AUDIT.md                 ← correctness audit; read before citing any number
+│   ├── PROVENANCE.md            ← old folder names → new labels, and what changed
+│   └── ENVIRONMENT.md           ← library versions behind the committed CSVs
+│
+└── archive/                     ← historical material, used by nothing in the pipeline
+    ├── notebooks/               ← the original notebooks
+    ├── superseded_figures/      ← pre-correction figure exports
+    └── smoe_duplicate_K016_run/ ← duplicate SMoE run, kept as evidence
 ```
-
----
 
 ## Method
 
@@ -285,44 +286,39 @@ Measured SMoE wall-clock time:
 | $K=32$ | 17.5 min | 17.3 min | 17.3 min | 30.8 min | 48.2 min |
 | $K=96$ | 120.9 min | 113.0 min | 106.5 min | 211.0 min | *incomplete* |
 
----
+## Correction to the earlier version
 
-## Results
+This repository supersedes an earlier version of the study. An audit before publication
+found that the original **SMoE "file size" was the byte size of the reconstructed PNG** —
+the decoder *output* — rather than the transmitted model. That made SMoE look
+competitive on rate when the opposite is true.
 
-Aggregate over all lossy operating points (lossless points excluded — see below).
-Regenerate with `python scripts/05_aggregate.py`.
+Measuring the actual payload (10 `float32` per surviving kernel) gives:
 
-| Codec | Points | PSNR mean | PSNR range | SSIM mean | bpp range |
+| Image | $K=16$ | $K=32$ | $K=96$ | Uncompressed | AVIF (near-lossless) |
 |---|---|---|---|---|---|
-| **AVIF** | 45 | **42.81 dB** | 24.28 – 61.33 | **0.965** | 0.008 – 2.49 |
-| **JPEG 2000** | 45 | 42.67 dB | 24.88 – 57.34 | **0.967** | 0.001 – 4.11 |
-| **JPEG** | 50 | 41.48 dB | 25.97 – 67.88 | 0.958 | 0.035 – 4.83 |
-| **SMoE** | 14 | **29.66 dB** | 20.84 – 39.66 | **0.859** | 0.387 – 20.13 |
+| Gradient | 0.45 bpp | 1.80 bpp | **15.61 bpp** | 8.00 bpp | 0.90 bpp |
+| Grass | 0.45 bpp | 1.80 bpp | **14.39 bpp** | 8.00 bpp | 1.34 bpp |
+| Nature | 0.51 bpp | 2.05 bpp | **14.92 bpp** | 8.00 bpp | 4.86 bpp |
+| Sharp Edges | 0.59 bpp | 2.37 bpp | **20.13 bpp** | 8.00 bpp | 0.37 bpp |
 
-### The comparison that matters: matched rate
+At its best-quality setting SMoE costs roughly **twice the uncompressed image** and still
+reaches only ~25–34 dB. No quantisation or entropy coding of SMoE parameters is
+implemented anywhere in this project, so the `float32` figure is the honest measured
+rate; `results/metrics/smoe.csv` also reports an optimistic 8-bit bound that is *not*
+achieved.
 
-Averaging over each codec's own quality ladder is only weakly informative, because the
-ladders are not comparable. The sharper question is: **at the same number of bits, who
-wins?** Every SMoE point paired with classical points within ±15 % bpp:
+Two further corrections carried into this repository:
 
-| Image | SMoE | bpp | SMoE PSNR | Best rival at that rate | Gap |
-|---|---|---|---|---|---|
-| Gradient | $K=16$ | 0.45 | 39.56 dB | JPEG 2000 Q80 — 53.79 dB | **−14.2 dB** |
-| Grass | $K=16$ | 0.45 | 22.09 dB | AVIF Q80 — 48.62 dB | **−26.5 dB** |
-| Mixed | $K=16$ | 0.39 | 23.07 dB | AVIF Q80 — 48.76 dB | **−25.7 dB** |
-| Nature | $K=16$ | 0.51 | 20.84 dB | AVIF Q40 — 29.26 dB | **−8.4 dB** |
-| Nature | $K=32$ | 2.05 | 22.13 dB | AVIF Q80 — 40.98 dB | **−18.9 dB** |
+- **Configuration labels.** Two of the original result folders were mislabelled — the
+  folder named `32k_…` held 256 kernels/tile ($K=16$) and `64k_…` held 1024 ($K=32$).
+  Only three budgets were ever run: **16, 32, 96**. Folders here are named by verified
+  kernel count and re-checked at runtime by `scripts/04_smoe_metrics.py`.
+- **Duplicated run.** The two lowest original configurations produced byte-identical
+  reconstructions across all five images. The duplicate is preserved under
+  `archive/smoe_duplicate_K016_run/` rather than counted twice.
 
-SMoE is 8 to 27 dB behind at equal bitrate. Full table in
-`results/metrics/matched_rate_comparison.csv`.
-
-![Rate-distortion, Nature](results/figures/rd_psnr_Nature_sq_gray.png)
-
-The three classical curves cluster tightly; SMoE sits far below all of them, and its
-best-quality point lands to the *right* of the 8 bpp uncompressed reference — it costs
-more than sending the raw image.
-
----
+The full audit, with the evidence for each finding, is in [`docs/AUDIT.md`](docs/AUDIT.md).
 
 ## Known limitations
 
@@ -335,8 +331,6 @@ more than sending the raw image.
   codec would need both; the rates here are what the reference implementation produces.
 - SMoE and the classical codecs were timed on different hardware (see above).
 
----
-
 ## Citing
 
 ```bibtex
@@ -345,7 +339,7 @@ more than sending the raw image.
   title  = {Exploring Classical and Learning-Based Approaches to Image Compression},
   year   = {2026},
   school = {Mid Sweden University},
-  note   = {https://github.com/<user>/image-compression-benchmark}
+  note   = {https://github.com/stefanileonardo/image-compression-benchmark}
 }
 ```
 

@@ -1,7 +1,7 @@
 """Correctness tests for the metric implementations.
 
 The reference implementations that the original project rolled by hand were wrong in
-ways that were invisible without a cross-check (AUDIT.md m1). These tests pin the
+ways that were invisible without a cross-check (docs/AUDIT.md m1). These tests pin the
 behaviour against ``scikit-image`` and against closed-form cases, so a regression is
 caught rather than silently absorbed into a figure.
 """
@@ -67,7 +67,7 @@ def test_psnr_matches_skimage(pair):
 
 
 def test_psnr_identical_is_infinite(pair):
-    """A lossless codec must produce inf, not a large finite number (AUDIT.md B4)."""
+    """A lossless codec must produce inf, not a large finite number (docs/AUDIT.md B4)."""
     ref, _ = pair
     assert M.psnr(ref, ref) == float("inf")
 
@@ -109,7 +109,7 @@ def test_ssim_identical_is_one(pair):
 
 
 def test_ssim_decreases_with_noise(pair):
-    """Monotonicity: more distortion must not score higher (AUDIT.md M4)."""
+    """Monotonicity: more distortion must not score higher (docs/AUDIT.md M4)."""
     ref, _ = pair
     rng = np.random.default_rng(1)
     scores = []
@@ -126,7 +126,7 @@ def test_ssim_rejects_unknown_window(pair):
 
 
 def test_ssim_handles_multichannel(pair):
-    """Three identical channels must score the same as one (AUDIT.md M2 rationale)."""
+    """Three identical channels must score the same as one (docs/AUDIT.md M2 rationale)."""
     ref, test = pair
     ref3 = np.stack([ref] * 3, axis=-1)
     test3 = np.stack([test] * 3, axis=-1)

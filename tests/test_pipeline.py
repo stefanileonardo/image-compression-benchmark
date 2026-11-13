@@ -25,7 +25,7 @@ def small_image(tmp_path_factory):
 
 
 def test_config_paths_are_repo_relative():
-    """Nothing may depend on a user directory (AUDIT.md P1)."""
+    """Nothing may depend on a user directory (docs/AUDIT.md P1)."""
     assert config.ROOT.is_dir()
     assert (config.ROOT / "src" / "config.py").exists()
     for p in (config.DATA_PROCESSED, config.RESULTS, config.METRICS):
@@ -33,7 +33,7 @@ def test_config_paths_are_repo_relative():
 
 
 def test_sweep_records_rate_at_every_point(small_image):
-    """AUDIT.md M1: every operating point must carry a byte count and a bpp."""
+    """docs/AUDIT.md M1: every operating point must carry a byte count and a bpp."""
     results = list(JPEG(qualities=[30, 60, 90], repeats=1)
                    .sweep(small_image, "small", ssim_window="uniform"))
     assert len(results) == 3
@@ -55,7 +55,7 @@ def test_higher_jpeg_quality_costs_more_bits(small_image):
 
 
 def test_grayscale_source_stays_single_channel(small_image):
-    """AUDIT.md M2: encoding grayscale as RGB inflated every classical rate."""
+    """docs/AUDIT.md M2: encoding grayscale as RGB inflated every classical rate."""
     img = Image.open(small_image)
     assert img.mode == "L"
     codec = JPEG(qualities=[75], repeats=1)
@@ -72,7 +72,7 @@ def test_jpeg2000_lossless_point_is_flagged(small_image):
 
 
 # --------------------------------------------------------------------------------------
-# aggregation policy (AUDIT.md B4)
+# aggregation policy (docs/AUDIT.md B4)
 # --------------------------------------------------------------------------------------
 
 def _frame():

@@ -39,7 +39,7 @@ avif:
 #
 # kernel_budgets are kernels PER DIMENSION (K), so K=96 starts from 96^2 = 9216 kernels
 # per tile before l1 pruning. Only these three budgets were actually run; see
-# AUDIT.md B2/B3 for why the original "16/32/64/96" ladder was wrong.
+# docs/AUDIT.md B2/B3 for why the original "16/32/64/96" ladder was wrong.
 # ---------------------------------------------------------------------------------------
 smoe:
   kernel_budgets: [16, 32, 96]

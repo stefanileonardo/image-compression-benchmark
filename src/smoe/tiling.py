@@ -16,10 +16,10 @@ and blending logic there was **correct** (edge clamping, de-duplicated coordinat
 normalisation by accumulated weight) and is preserved. What changed:
 
 * no Kaggle paths, no shell magics, no runtime source patching — the vendored ``tf-smoe``
-  under ``src/smoe/vendor/`` is already patched for TF 1.x compat mode (AUDIT.md P2, P3);
-* paths come from :mod:`src.config`, so it runs on any OS (AUDIT.md P1);
+  under ``src/smoe/vendor/`` is already patched for TF 1.x compat mode (docs/AUDIT.md P2, P3);
+* paths come from :mod:`src.config`, so it runs on any OS (docs/AUDIT.md P1);
 * the kernel budget is recorded in the output directory name, so a results folder can
-  never disagree with its label the way the originals did (AUDIT.md B2).
+  never disagree with its label the way the originals did (docs/AUDIT.md B2).
 """
 
 from __future__ import annotations

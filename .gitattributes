@@ -19,7 +19,7 @@
 *.pkl    binary
 
 # Keep generated artefacts out of language statistics and diffs.
-notebooks/legacy/**  linguist-vendored
+archive/**           linguist-vendored
 src/smoe/vendor/**   linguist-vendored
 results/**           linguist-generated
 paper/figs/**        linguist-documentation
